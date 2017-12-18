@@ -1,16 +1,32 @@
 package com.isa.pad.sunglasseswarehouse.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by Faust on 12/18/2017.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonPropertyOrder("case")
+@XmlRootElement
 public class Case {
+    @JsonProperty("id")
     private long id;
+    @JsonProperty("brand")
     private String brand;
+    @JsonProperty("color")
     private String color;
+    @JsonProperty("material")
     private String material;
+    @JsonProperty("model")
     private String model;
 
-    private Case() {
+    public Case() {
     }
 
     private Case(Builder builder) {

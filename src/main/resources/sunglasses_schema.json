@@ -1,0 +1,75 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "brand": {
+      "$id": "/properties/brand",
+      "type": "string",
+      "title": "The Brand Schema.",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Calvin Klein"
+      ]
+    },
+    "frameColor": {
+      "$id": "/properties/frameColor",
+      "type": "string",
+      "title": "The Framecolor Schema.",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Black"
+      ]
+    },
+    "frameMaterial": {
+      "$id": "/properties/frameMaterial",
+      "type": "string",
+      "title": "The Framematerial Schema.",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Plastic-Metal"
+      ]
+    },
+    "model": {
+      "$id": "/properties/model",
+      "type": "string",
+      "title": "The Model Schema.",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "CK789S"
+      ]
+    },
+    "glass": {
+      "$id": "/properties/glass",
+      "type": "object",
+      "properties": {
+        "material": {
+          "$id": "/properties/glass/properties/material",
+          "type": "string",
+          "title": "The Material Schema.",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Glass"
+          ]
+        },
+        "color": {
+          "$id": "/properties/glass/properties/color",
+          "type": "string",
+          "title": "The Color Schema.",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Blue"
+          ]
+        }
+      }
+    }
+  }
+}
+

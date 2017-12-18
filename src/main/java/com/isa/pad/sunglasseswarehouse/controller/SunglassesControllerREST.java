@@ -3,6 +3,10 @@ package com.isa.pad.sunglasseswarehouse.controller;
 import com.isa.pad.sunglasseswarehouse.model.Case;
 import com.isa.pad.sunglasseswarehouse.model.Sunglasses;
 import com.isa.pad.sunglasseswarehouse.service.SunglassesService;
+import com.isa.pad.sunglasseswarehouse.util.JsonSerializer;
+import com.isa.pad.sunglasseswarehouse.util.JsonValidator;
+import com.isa.pad.sunglasseswarehouse.util.XmlSerializer;
+import com.isa.pad.sunglasseswarehouse.util.XmlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,13 +85,38 @@ public class SunglassesControllerREST {
     }
 
     @RequestMapping(value = "/sg/", method = RequestMethod.POST)
-    public ResponseEntity<?> createCase(@RequestBody Sunglasses s, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> createCase(@RequestBody String body, @RequestHeader("Content-Type") String contentType, UriComponentsBuilder uriComponentsBuilder) {
+        if (contentType.contains("xml")) {
+            XmlValidator xmlValidator = new XmlValidator("sunglasses_schema.xsd", Sunglasses.class);
+            if (xmlValidator.validate(body)) {
+                XmlSerializer xmlSerializer = new XmlSerializer();
+                Sunglasses s = xmlSerializer.fromXml(body, Sunglasses.class);
+                return createSunglasses(uriComponentsBuilder, s);
+            } else {
+                return new ResponseEntity<>("XML Validation failed with : " + xmlValidator.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }else if(contentType.contains("json")){
+            JsonValidator jsonValidator = new JsonValidator("sunglasses_schema.json");
+            if(jsonValidator.validate(body)){
+                JsonSerializer jsonSerializer = new JsonSerializer();
+                Sunglasses s = jsonSerializer.fromJson(body, Sunglasses.class);
+                return createSunglasses(uriComponentsBuilder, s);
+            }else {
+                return new ResponseEntity<>("JSON Validation failed with : " + jsonValidator.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>("Something happened.", HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<?> createSunglasses(UriComponentsBuilder uriComponentsBuilder, Sunglasses s) {
         if (sunglassesService.sunglassesExists(s))
             return new ResponseEntity<>("Unable to create sunglasses. Already exists.", HttpStatus.CONFLICT);
-        sunglassesService.saveSunglasses(s);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(uriComponentsBuilder.path("/sunglasses/sg/{id}").buildAndExpand(s.getId()).toUri());
-        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        else {
+            sunglassesService.saveSunglasses(s);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(uriComponentsBuilder.path("/sunglasses/sg/{id}").buildAndExpand(s.getId()).toUri());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        }
     }
 
     @RequestMapping(value = "/sg/{id}", method = RequestMethod.PUT)

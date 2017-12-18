@@ -1,8 +1,11 @@
 package com.isa.pad.sunglasseswarehouse.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by Faust on 12/18/2017.
  */
+@XmlRootElement
 public class Glass {
     private String material;
     private String color;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="sunglasses" type="sunglasses"/>
+  <xs:element name="glass" type="glass"/>
+
+  <xs:complexType name="sunglasses">
+    <xs:sequence>
+      <xs:element name="brand" type="xs:string" minOccurs="1"/>
+      <xs:element name="frameColor" type="xs:string" minOccurs="1"/>
+      <xs:element name="frameMaterial" type="xs:string" minOccurs="1"/>
+      <xs:element name="model" type="xs:string" minOccurs="1"/>
+      <xs:element name="glass" type="glass" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="glass">
+    <xs:sequence>
+      <xs:element name="material" type="xs:string" minOccurs="1"/>
+      <xs:element name="color" type="xs:string" minOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="builder" final="extension restriction">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+

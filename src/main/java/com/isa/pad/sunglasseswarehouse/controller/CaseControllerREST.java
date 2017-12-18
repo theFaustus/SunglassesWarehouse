@@ -2,7 +2,10 @@ package com.isa.pad.sunglasseswarehouse.controller;
 
 import com.isa.pad.sunglasseswarehouse.model.Case;
 import com.isa.pad.sunglasseswarehouse.service.CaseService;
-import com.isa.pad.sunglasseswarehouse.util.ErrorMessage;
+import com.isa.pad.sunglasseswarehouse.util.JsonSerializer;
+import com.isa.pad.sunglasseswarehouse.util.JsonValidator;
+import com.isa.pad.sunglasseswarehouse.util.XmlSerializer;
+import com.isa.pad.sunglasseswarehouse.util.XmlValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,13 +84,38 @@ public class CaseControllerREST {
     }
 
     @RequestMapping(value = "/case/", method = RequestMethod.POST)
-    public ResponseEntity<?> createCase(@RequestBody Case c, UriComponentsBuilder uriComponentsBuilder) {
-        if (caseService.caseExists(c))
+    public ResponseEntity<?> createCase(@RequestHeader(value = "Content-Type") String contentType, @RequestBody String body, UriComponentsBuilder uriComponentsBuilder) {
+        if (contentType.contains("xml")) {
+            XmlValidator xmlValidator = new XmlValidator("case_schema.xsd", Case.class);
+            if (xmlValidator.validate(body)) {
+                XmlSerializer xmlSerializer = new XmlSerializer();
+                Case c = xmlSerializer.fromXml(body, Case.class);
+                return createCase(uriComponentsBuilder, c);
+            } else {
+                return new ResponseEntity<>("XML Validation failed with : " + xmlValidator.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        } else if(contentType.contains("json")){
+            JsonValidator jsonValidator = new JsonValidator("case_schema.json");
+            if(jsonValidator.validate(body)){
+                JsonSerializer jsonSerializer = new JsonSerializer();
+                Case c = jsonSerializer.fromJson(body, Case.class);
+                return createCase(uriComponentsBuilder, c);
+            }else {
+                return new ResponseEntity<>("JSON Validation failed with : " + jsonValidator.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+        }
+        return new ResponseEntity<>("Something happened.", HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<?> createCase(UriComponentsBuilder uriComponentsBuilder, Case c) {
+        if(caseService.caseExists(c))
             return new ResponseEntity<>("Unable to create case. Already exists.", HttpStatus.CONFLICT);
-        caseService.saveCase(c);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(uriComponentsBuilder.path("/cases/case/{id}").buildAndExpand(c.getId()).toUri());
-        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        else {
+            caseService.saveCase(c);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setLocation(uriComponentsBuilder.path("/cases/case/{id}").buildAndExpand(c.getId()).toUri());
+            return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
+        }
     }
 
     @RequestMapping(value = "/case/{id}", method = RequestMethod.PUT)
