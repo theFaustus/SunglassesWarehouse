@@ -11,6 +11,9 @@ public class Sunglasses {
     private String model;
     private Glass glass;
 
+    private Sunglasses() {
+    }
+
     private Sunglasses(Builder builder) {
         this.id = builder.id;
         this.brand = builder.brand;

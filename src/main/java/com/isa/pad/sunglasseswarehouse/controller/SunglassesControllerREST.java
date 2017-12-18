@@ -43,6 +43,15 @@ public class SunglassesControllerREST {
             return new ResponseEntity<>("No such sunglasses with id = " + id, HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = "model")
+    public ResponseEntity<?> getCase(@RequestParam("model") String model) {
+        Optional<Sunglasses> foundCase = sunglassesService.findByModel(model);
+        if (foundCase.isPresent())
+            return new ResponseEntity<>(foundCase.get(), HttpStatus.OK);
+        else
+            return new ResponseEntity<>("No such sunglasses with model = " + model, HttpStatus.NOT_FOUND);
+    }
+
     @RequestMapping(value = "/sg/", method = RequestMethod.POST)
     public ResponseEntity<?> createCase(@RequestBody Sunglasses s, UriComponentsBuilder uriComponentsBuilder) {
         if (sunglassesService.sunglassesExists(s))

@@ -44,6 +44,15 @@ public class CaseControllerREST {
             return new ResponseEntity<>("No such case with id = " + id, HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = "model")
+    public ResponseEntity<?> getCaseByModel(@RequestParam("model") String model) {
+        Optional<Case> foundCase = caseService.findByModel(model);
+        if (foundCase.isPresent())
+            return new ResponseEntity<>(foundCase.get(), HttpStatus.OK);
+        else
+            return new ResponseEntity<>("No such case with id = " + model, HttpStatus.NOT_FOUND);
+    }
+
     @RequestMapping(value = "/case/", method = RequestMethod.POST)
     public ResponseEntity<?> createCase(@RequestBody Case c, UriComponentsBuilder uriComponentsBuilder) {
         if (caseService.caseExists(c))

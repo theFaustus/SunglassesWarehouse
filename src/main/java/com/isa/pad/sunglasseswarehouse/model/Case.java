@@ -10,6 +10,9 @@ public class Case {
     private String material;
     private String model;
 
+    private Case() {
+    }
+
     private Case(Builder builder) {
         this.id = builder.id;
         this.brand = builder.brand;

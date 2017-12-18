@@ -7,6 +7,9 @@ public class Glass {
     private String material;
     private String color;
 
+    public Glass() {
+    }
+
     public Glass(String material, String color) {
         this.material = material;
         this.color = color;
