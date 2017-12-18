@@ -71,6 +71,15 @@ public class CaseControllerREST {
             return new ResponseEntity<>(allCases, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = {"start", "end"})
+    public ResponseEntity<?> getAllCasesByLimit(@RequestParam("start") int start, @RequestParam("end") int end) {
+        List<Case> allCases = caseService.findAllByLimit(start, end);
+        if (allCases.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(allCases, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/case/", method = RequestMethod.POST)
     public ResponseEntity<?> createCase(@RequestBody Case c, UriComponentsBuilder uriComponentsBuilder) {
         if (caseService.caseExists(c))

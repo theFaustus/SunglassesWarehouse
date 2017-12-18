@@ -25,6 +25,8 @@ public interface SunglassesService {
 
     List<Sunglasses> findByModelStartsWith(String text);
 
+    List<Sunglasses> findAllByLimit(int startIndex, int endIndex);
+
     boolean sunglassesExists(Sunglasses s);
 
     void deleteAllSunglasses();

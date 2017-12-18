@@ -28,18 +28,18 @@ public class SunglassesControllerREST {
 
     @RequestMapping(value = "/list/", method = RequestMethod.GET)
     public ResponseEntity<List<Sunglasses>> listAllCases() {
-        List<Sunglasses> allCases = sunglassesService.findAllSunglasses();
-        if (allCases.isEmpty())
+        List<Sunglasses> allSunglasses = sunglassesService.findAllSunglasses();
+        if (allSunglasses.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         else
-            return new ResponseEntity<>(allCases, HttpStatus.OK);
+            return new ResponseEntity<>(allSunglasses, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/sg/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getCase(@PathVariable("id") long id) {
-        Optional<Sunglasses> foundCase = sunglassesService.findById(id);
-        if (foundCase.isPresent())
-            return new ResponseEntity<>(foundCase.get(), HttpStatus.OK);
+    public ResponseEntity<?> getSunglasses(@PathVariable("id") long id) {
+        Optional<Sunglasses> foundSunglasses = sunglassesService.findById(id);
+        if (foundSunglasses.isPresent())
+            return new ResponseEntity<>(foundSunglasses.get(), HttpStatus.OK);
         else
             return new ResponseEntity<>("No such sunglasses with id = " + id, HttpStatus.NOT_FOUND);
     }
@@ -53,11 +53,20 @@ public class SunglassesControllerREST {
             return new ResponseEntity<>(sunglasses, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = "model_starts_with")
-    public ResponseEntity<?> getCaseByModelStartsWith(@RequestParam("model_starts_with") String text) {
+    @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = "model_starts_with")
+    public ResponseEntity<?> getSunglassesByModelStartsWith(@RequestParam("model_starts_with") String text) {
         List<Sunglasses> allSunglasses = sunglassesService.findByModelStartsWith(text);
         if (allSunglasses.isEmpty())
             return new ResponseEntity<>("No such sunglasses which start with = " + text, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(allSunglasses, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = {"start", "end"})
+    public ResponseEntity<?> getAllSunglassesByLimit(@RequestParam("start") int start, @RequestParam("end") int end) {
+        List<Sunglasses> allSunglasses = sunglassesService.findAllByLimit(start, end);
+        if (allSunglasses.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         else
             return new ResponseEntity<>(allSunglasses, HttpStatus.OK);
     }

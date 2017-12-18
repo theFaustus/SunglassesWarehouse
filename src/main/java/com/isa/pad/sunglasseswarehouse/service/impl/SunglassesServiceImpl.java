@@ -75,6 +75,18 @@ public class SunglassesServiceImpl implements SunglassesService{
         return listOfSunglasses.stream().filter(s -> s.getModel().startsWith(text)).collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<Sunglasses> findAllByLimit(int startIndex, int endIndex) {
+        try {
+            List<Sunglasses> sunglasses = listOfSunglasses.subList(startIndex, endIndex);
+            return sunglasses;
+        } catch (IndexOutOfBoundsException ex){
+            return listOfSunglasses;
+        }
+    }
+
+
     static {
         listOfSunglasses = populateWithCases();
     }

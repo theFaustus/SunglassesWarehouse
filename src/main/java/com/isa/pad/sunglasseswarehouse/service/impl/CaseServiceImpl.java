@@ -62,8 +62,8 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public List<Case> findByAnyField(String q) {
         List<Case> result = new ArrayList<>();
-        for(Case c : listOfCases){
-            if(c.toString().contains(q))
+        for (Case c : listOfCases) {
+            if (c.toString().contains(q))
                 result.add(c);
         }
         return result;
@@ -72,6 +72,16 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public List<Case> findByModelStartsWith(String text) {
         return listOfCases.stream().filter(c -> c.getModel().startsWith(text)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Case> findAllByLimit(int startIndex, int endIndex) {
+        try {
+            List<Case> cases = listOfCases.subList(startIndex, endIndex);
+            return cases;
+        } catch (IndexOutOfBoundsException ex){
+            return listOfCases;
+        }
     }
 
     static {

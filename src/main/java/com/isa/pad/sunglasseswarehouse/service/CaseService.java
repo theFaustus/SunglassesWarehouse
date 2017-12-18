@@ -17,6 +17,8 @@ public interface CaseService {
 
     List<Case> findByModelStartsWith(String text);
 
+    List<Case> findAllByLimit(int startIndex, int endIndex);
+
     void saveCase(Case c);
 
     void updateCase(Case c);
