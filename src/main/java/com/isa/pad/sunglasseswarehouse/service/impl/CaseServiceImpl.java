@@ -58,6 +58,16 @@ public class CaseServiceImpl implements CaseService {
         listOfCases.clear();
     }
 
+    @Override
+    public List<Case> findByAnyField(String q) {
+        List<Case> result = new ArrayList<>();
+        for(Case c : listOfCases){
+            if(c.toString().contains(q))
+                result.add(c);
+        }
+        return result;
+    }
+
     static {
         listOfCases = populateWithCases();
     }

@@ -13,6 +13,8 @@ public interface CaseService {
 
     Optional<Case> findByModel(String model);
 
+    List<Case> findByAnyField(String q);
+
     void saveCase(Case c);
 
     void updateCase(Case c);

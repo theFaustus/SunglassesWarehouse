@@ -1,5 +1,6 @@
 package com.isa.pad.sunglasseswarehouse.controller;
 
+import com.isa.pad.sunglasseswarehouse.model.Case;
 import com.isa.pad.sunglasseswarehouse.model.Sunglasses;
 import com.isa.pad.sunglasseswarehouse.service.SunglassesService;
 import org.slf4j.Logger;
@@ -42,6 +43,16 @@ public class SunglassesControllerREST {
         else
             return new ResponseEntity<>("No such sunglasses with id = " + id, HttpStatus.NOT_FOUND);
     }
+
+    @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = "q")
+    public ResponseEntity<?> getSunglassesByAnyField(@RequestParam("q") String q) {
+        List<Sunglasses> sunglasses = sunglassesService.findByAnyField(q);
+        if (sunglasses.isEmpty())
+            return new ResponseEntity<>("No such sunglasses with requested query = " + q, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(sunglasses, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = "model")
     public ResponseEntity<?> getCase(@RequestParam("model") String model) {

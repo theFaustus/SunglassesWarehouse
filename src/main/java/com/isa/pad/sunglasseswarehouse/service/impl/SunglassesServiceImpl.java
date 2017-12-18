@@ -59,6 +59,16 @@ public class SunglassesServiceImpl implements SunglassesService{
         listOfSunglasses.clear();
     }
 
+    @Override
+    public List<Sunglasses> findByAnyField(String q) {
+        List<Sunglasses> result = new ArrayList<>();
+        for(Sunglasses s : listOfSunglasses){
+            if(s.toString().contains(q))
+                result.add(s);
+        }
+        return result;
+    }
+
     static {
         listOfSunglasses = populateWithCases();
     }

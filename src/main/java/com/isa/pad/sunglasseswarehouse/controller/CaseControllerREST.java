@@ -53,6 +53,15 @@ public class CaseControllerREST {
             return new ResponseEntity<>("No such case with id = " + model, HttpStatus.NOT_FOUND);
     }
 
+    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = "q")
+    public ResponseEntity<?> getCaseByAnyField(@RequestParam("q") String q) {
+        List<Case> allCases = caseService.findByAnyField(q);
+        if (allCases.isEmpty())
+            return new ResponseEntity<>("No such cases with requested query = " + q, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(allCases, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/case/", method = RequestMethod.POST)
     public ResponseEntity<?> createCase(@RequestBody Case c, UriComponentsBuilder uriComponentsBuilder) {
         if (caseService.caseExists(c))

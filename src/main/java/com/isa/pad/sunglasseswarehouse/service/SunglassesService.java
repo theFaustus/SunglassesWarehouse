@@ -21,6 +21,8 @@ public interface SunglassesService {
 
     List<Sunglasses> findAllSunglasses();
 
+    List<Sunglasses> findByAnyField(String q);
+
     boolean sunglassesExists(Sunglasses s);
 
     void deleteAllSunglasses();
