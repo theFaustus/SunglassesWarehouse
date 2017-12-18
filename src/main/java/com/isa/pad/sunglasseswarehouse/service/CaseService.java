@@ -15,6 +15,8 @@ public interface CaseService {
 
     List<Case> findByAnyField(String q);
 
+    List<Case> findByModelStartsWith(String text);
+
     void saveCase(Case c);
 
     void updateCase(Case c);

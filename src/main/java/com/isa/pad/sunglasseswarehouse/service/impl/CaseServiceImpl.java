@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * Created by Faust on 12/18/2017.
@@ -66,6 +67,11 @@ public class CaseServiceImpl implements CaseService {
                 result.add(c);
         }
         return result;
+    }
+
+    @Override
+    public List<Case> findByModelStartsWith(String text) {
+        return listOfCases.stream().filter(c -> c.getModel().startsWith(text)).collect(Collectors.toList());
     }
 
     static {

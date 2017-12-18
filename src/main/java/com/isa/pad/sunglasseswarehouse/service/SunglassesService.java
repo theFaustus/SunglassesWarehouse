@@ -23,6 +23,8 @@ public interface SunglassesService {
 
     List<Sunglasses> findByAnyField(String q);
 
+    List<Sunglasses> findByModelStartsWith(String text);
+
     boolean sunglassesExists(Sunglasses s);
 
     void deleteAllSunglasses();

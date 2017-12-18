@@ -53,6 +53,14 @@ public class SunglassesControllerREST {
             return new ResponseEntity<>(sunglasses, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = "model_starts_with")
+    public ResponseEntity<?> getCaseByModelStartsWith(@RequestParam("model_starts_with") String text) {
+        List<Sunglasses> allSunglasses = sunglassesService.findByModelStartsWith(text);
+        if (allSunglasses.isEmpty())
+            return new ResponseEntity<>("No such sunglasses which start with = " + text, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(allSunglasses, HttpStatus.OK);
+    }
 
     @RequestMapping(value = "/sg/", method = RequestMethod.GET, params = "model")
     public ResponseEntity<?> getCase(@RequestParam("model") String model) {

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 /**
  * Created by Faust on 12/18/2017.
@@ -67,6 +68,11 @@ public class SunglassesServiceImpl implements SunglassesService{
                 result.add(s);
         }
         return result;
+    }
+
+    @Override
+    public List<Sunglasses> findByModelStartsWith(String text) {
+        return listOfSunglasses.stream().filter(s -> s.getModel().startsWith(text)).collect(Collectors.toList());
     }
 
     static {

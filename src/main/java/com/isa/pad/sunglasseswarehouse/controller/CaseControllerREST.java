@@ -62,6 +62,15 @@ public class CaseControllerREST {
             return new ResponseEntity<>(allCases, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/case/", method = RequestMethod.GET, params = "model_starts_with")
+    public ResponseEntity<?> getCaseByModelStartsWith(@RequestParam("model_starts_with") String text) {
+        List<Case> allCases = caseService.findByModelStartsWith(text);
+        if (allCases.isEmpty())
+            return new ResponseEntity<>("No such cases which start with = " + text, HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(allCases, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/case/", method = RequestMethod.POST)
     public ResponseEntity<?> createCase(@RequestBody Case c, UriComponentsBuilder uriComponentsBuilder) {
         if (caseService.caseExists(c))
